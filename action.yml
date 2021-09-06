@@ -13,10 +13,6 @@
 #  limitations under the License.
 name: Publish
 description: "Publishs tests as Maven artifacts to GitHub Packages."
-inputs:
-  workspace:
-    description: "Base directory of project."
-    required: true
 runs:
   using: composite
   steps:
@@ -30,10 +26,10 @@ runs:
         architecture: 'x64'
         cache: 'gradle'
     - name: Make gradlew executable
-      run: chmod +x ${{ inputs.workspace }}/gradlew
+      run: chmod +x ${{ env.GITHUB_WORKSPACE }}/gradlew
       shell: bash
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@v1
     - name: Test solution with autograding tests
-      run: ${{ inputs.workspace }}/gradlew test
+      run: ${{ env.GITHUB_WORKSPACE }}/gradlew test
       shell: bash
